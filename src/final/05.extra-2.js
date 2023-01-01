@@ -3,7 +3,7 @@
 // http://localhost:3000/isolated/final/05.extra-2.js
 
 import * as React from 'react'
-import {Switch} from '../switch'
+import { Switch } from '../switch'
 
 const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
 
@@ -12,10 +12,10 @@ const actionTypes = {
   reset: 'reset',
 }
 
-function toggleReducer(state, {type, initialState}) {
+function toggleReducer(state, { type, initialState }) {
   switch (type) {
     case actionTypes.toggle: {
-      return {on: !state.on}
+      return { on: !state.on }
     }
     case actionTypes.reset: {
       return initialState
@@ -26,15 +26,15 @@ function toggleReducer(state, {type, initialState}) {
   }
 }
 
-function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
-  const {current: initialState} = React.useRef({on: initialOn})
+function useToggle({ initialOn = false, reducer = toggleReducer } = {}) {
+  const { current: initialState } = React.useRef({ on: initialOn })
   const [state, dispatch] = React.useReducer(reducer, initialState)
-  const {on} = state
+  const { on } = state
 
-  const toggle = () => dispatch({type: actionTypes.toggle})
-  const reset = () => dispatch({type: actionTypes.reset, initialState})
+  const toggle = () => dispatch({ type: actionTypes.toggle })
+  const reset = () => dispatch({ type: actionTypes.reset, initialState })
 
-  function getTogglerProps({onClick, ...props} = {}) {
+  function getTogglerProps({ onClick, ...props } = {}) {
     return {
       'aria-pressed': on,
       onClick: callAll(onClick, toggle),
@@ -42,7 +42,7 @@ function useToggle({initialOn = false, reducer = toggleReducer} = {}) {
     }
   }
 
-  function getResetterProps({onClick, ...props} = {}) {
+  function getResetterProps({ onClick, ...props } = {}) {
     return {
       onClick: callAll(onClick, reset),
       ...props,
@@ -67,12 +67,12 @@ function App() {
 
   function toggleStateReducer(state, action) {
     if (action.type === actionTypes.toggle && clickedTooMuch) {
-      return {on: state.on}
+      return { on: state.on }
     }
     return toggleReducer(state, action)
   }
 
-  const {on, getTogglerProps, getResetterProps} = useToggle({
+  const { on, getTogglerProps, getResetterProps } = useToggle({
     reducer: toggleStateReducer,
   })
 
@@ -93,7 +93,7 @@ function App() {
       ) : timesClicked > 0 ? (
         <div data-testid="click-count">Click count: {timesClicked}</div>
       ) : null}
-      <button {...getResetterProps({onClick: () => setTimesClicked(0)})}>
+      <button {...getResetterProps({ onClick: () => setTimesClicked(0) })}>
         Reset
       </button>
     </div>

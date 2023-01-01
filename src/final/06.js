@@ -2,7 +2,7 @@
 // http://localhost:3000/isolated/final/06.js
 
 import * as React from 'react'
-import {Switch} from '../switch'
+import { Switch } from '../switch'
 
 const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
 
@@ -11,10 +11,10 @@ const actionTypes = {
   reset: 'reset',
 }
 
-function toggleReducer(state, {type, initialState}) {
+function toggleReducer(state, { type, initialState }) {
   switch (type) {
     case actionTypes.toggle: {
-      return {on: !state.on}
+      return { on: !state.on }
     }
     case actionTypes.reset: {
       return initialState
@@ -31,7 +31,7 @@ function useToggle({
   onChange,
   on: controlledOn,
 } = {}) {
-  const {current: initialState} = React.useRef({on: initialOn})
+  const { current: initialState } = React.useRef({ on: initialOn })
   const [state, dispatch] = React.useReducer(reducer, initialState)
   const onIsControlled = controlledOn != null
   const on = onIsControlled ? controlledOn : state.on
@@ -40,14 +40,14 @@ function useToggle({
     if (!onIsControlled) {
       dispatch(action)
     }
-    onChange?.(reducer({...state, on}, action), action)
+    onChange?.(reducer({ ...state, on }, action), action)
   }
 
-  const toggle = () => dispatchWithOnChange({type: actionTypes.toggle})
+  const toggle = () => dispatchWithOnChange({ type: actionTypes.toggle })
   const reset = () =>
-    dispatchWithOnChange({type: actionTypes.reset, initialState})
+    dispatchWithOnChange({ type: actionTypes.reset, initialState })
 
-  function getTogglerProps({onClick, ...props} = {}) {
+  function getTogglerProps({ onClick, ...props } = {}) {
     return {
       'aria-pressed': on,
       onClick: callAll(onClick, toggle),
@@ -55,7 +55,7 @@ function useToggle({
     }
   }
 
-  function getResetterProps({onClick, ...props} = {}) {
+  function getResetterProps({ onClick, ...props } = {}) {
     return {
       onClick: callAll(onClick, reset),
       ...props,
@@ -71,9 +71,9 @@ function useToggle({
   }
 }
 
-function Toggle({on: controlledOn, onChange}) {
-  const {on, getTogglerProps} = useToggle({on: controlledOn, onChange})
-  const props = getTogglerProps({on})
+function Toggle({ on: controlledOn, onChange }) {
+  const { on, getTogglerProps } = useToggle({ on: controlledOn, onChange })
+  const props = getTogglerProps({ on })
   return <Switch {...props} />
 }
 
@@ -124,7 +124,7 @@ function App() {
 
 export default App
 // we're adding the Toggle export for tests
-export {Toggle}
+export { Toggle }
 
 /*
 eslint
